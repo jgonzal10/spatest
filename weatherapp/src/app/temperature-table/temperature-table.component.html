@@ -1,0 +1,45 @@
+<mat-card class="example-card">
+  <form [formGroup]="temForm" (ngSubmit)="onFormSubmit(temForm.value)">
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Temperature" formControlName="temperature"
+             [errorStateMatcher]="matcher">
+      <mat-error>
+        <span *ngIf="!temForm.get('temperature').valid && temForm.get('temperature').touched">*This field is required</span>
+      </mat-error>
+    </mat-form-field>
+      <button type="submit" [disabled]="!temForm.valid" mat-flat-button color="primary">Add Temperature</button>
+  </form>
+</mat-card>
+<mat-grid-list cols = "4" rowHeight = "100px">
+  <mat-grid-tile>Average: {{average}} °C
+  </mat-grid-tile>
+  <mat-grid-tile >Highest: {{highest}} °C
+  </mat-grid-tile>
+  <mat-grid-tile >Lowest: {{lowest}} °C
+  </mat-grid-tile>
+  <mat-grid-tile >Median: {{median}} °C
+  </mat-grid-tile>
+</mat-grid-list>
+
+<div class="mat-elevation-z8">
+  <table mat-table class="full-width-table" [dataSource]="temperatures" matSort aria-label="Elements">
+    <!-- Date Column -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef>Date</th>
+      <td mat-cell *matCellDef="let row">{{row.date}}</td>
+    </ng-container>
+
+    <!-- Temperature Column -->
+    <ng-container matColumnDef="temperature">
+      <th mat-header-cell *matHeaderCellDef>Temperature</th>
+      <td mat-cell *matCellDef="let row">{{row.temperature}} °C</td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let row"><a mat-flat-button color="warn" (click)="deleteTemperature(row._id)">Delete</a></td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+</div>
